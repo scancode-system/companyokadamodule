@@ -1,0 +1,13 @@
+{
+    "name": "CompanyOkada",
+    "alias": "companyokada",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\CompanyOkada\\Providers\\CompanyOkadaServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

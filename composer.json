@@ -1,0 +1,31 @@
+{
+    "name": "scancode-system/company-okada-module",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\CompanyOkada\\Providers\\CompanyOkadaServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\CompanyOkada\\": ""
+        }
+    },
+    "type": "laravel-module",
+    "require": {
+        "scancode-system/scancode-base-module":"^1.0",
+        "scancode-system/product-stock-now-after-module":"^1.0",
+        "scancode-system/subsidiary-module":"^1.0"
+    }
+}
