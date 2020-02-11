@@ -14,11 +14,7 @@ class CompanyOkadaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerTranslations();
-        $this->registerConfig();
         $this->registerViews();
-        $this->registerFactories();
-        $this->loadMigrationsFrom(module_path('CompanyOkada', 'Database/Migrations'));
     }
 
     /**
@@ -31,20 +27,6 @@ class CompanyOkadaServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
     }
 
-    /**
-     * Register config.
-     *
-     * @return void
-     */
-    protected function registerConfig()
-    {
-        $this->publishes([
-            module_path('CompanyOkada', 'Config/config.php') => config_path('companyokada.php'),
-        ], 'config');
-        $this->mergeConfigFrom(
-            module_path('CompanyOkada', 'Config/config.php'), 'companyokada'
-        );
-    }
 
     /**
      * Register views.
@@ -66,33 +48,6 @@ class CompanyOkadaServiceProvider extends ServiceProvider
         }, \Config::get('view.paths')), [$sourcePath]), 'companyokada');
     }
 
-    /**
-     * Register translations.
-     *
-     * @return void
-     */
-    public function registerTranslations()
-    {
-        $langPath = resource_path('lang/modules/companyokada');
-
-        if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, 'companyokada');
-        } else {
-            $this->loadTranslationsFrom(module_path('CompanyOkada', 'Resources/lang'), 'companyokada');
-        }
-    }
-
-    /**
-     * Register an additional directory of factories.
-     *
-     * @return void
-     */
-    public function registerFactories()
-    {
-        if (! app()->environment('production') && $this->app->runningInConsole()) {
-            app(Factory::class)->load(module_path('CompanyOkada', 'Database/factories'));
-        }
-    }
 
     /**
      * Get the services provided by the provider.
