@@ -15,6 +15,7 @@ class CompanyOkadaServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerViews();
+                $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -25,6 +26,7 @@ class CompanyOkadaServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+         $this->app->register(ViewComposerServiceProvider::class);
     }
 
 
