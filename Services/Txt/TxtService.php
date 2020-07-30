@@ -1,17 +1,17 @@
 <?php
 
-namespace Modules\CompanyOkada\Services;
+namespace Modules\CompanyOkada\Services\Txt;
 
 use Illuminate\Support\Facades\Storage;
 use Modules\Order\Repositories\OrderRepository;
+use Modules\Dashboard\Services\Txt\TxtService as TxtServiceBase;
 use  ZipArchive;
 
-class TxtService 
+class TxtService extends TxtServiceBase
 {
 
-	public function run()
+	public function build()
 	{
-		Storage::deleteDirectory('txt');
 		$footers = collect([]);
 
 		$orders = OrderRepository::loadClosedOrders();
@@ -33,9 +33,6 @@ class TxtService
 		foreach ($footers as $footer) {
 			$this->footer($footer->file_path, $footer->order);
 		}
-
-		$this->zip();
-		Storage::deleteDirectory('txt');
 	}
 
 	private function header($file_path, $order, $item)
@@ -73,17 +70,6 @@ class TxtService
 	}
 
 
-	public function zip()
-	{
-		$files = Storage::allFiles('txt');
-		$zip_path = storage_path('app/txt.zip'); 
-		$zip = new ZipArchive;
-		$zip->open($zip_path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-		foreach ($files as $file) {
-			$zip->addFile(storage_path('app/'.$file), $file);
-		}
-		$zip->close();
-	}	
 
 	private function file_path($item)
 	{
@@ -97,7 +83,7 @@ class TxtService
 			$from = 'nacional';
 		}
 
-		return 'txt/filial_'.$subsidiary_id.'/'.$from.'/'.addString($subsidiary_id, 6, '0').'_'.addString($item->order->id, 7, '0') . '.txt';
+		return $this->path_base.'filial_'.$subsidiary_id.'/'.$from.'/'.addString($subsidiary_id, 6, '0').'_'.addString($item->order->id, 7, '0') . '.txt';
 	}
 
 	private function subsidiary_id($item)
@@ -107,11 +93,6 @@ class TxtService
 		} else {
 			return '';
 		}
-	}
-
-	public function download()
-	{
-		return response()->download(storage_path('app/txt.zip'))->deleteFileAfterSend();;
 	}
 
 }
